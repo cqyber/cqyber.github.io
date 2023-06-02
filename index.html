@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gem Amount Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #gem-amount {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gem Amount Checker</h1>
+    <form id="gem-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <button type="button" onclick="checkGemAmount()">Check Gem Amount</button>
+    </form>
+    <div id="gem-amount"></div>
+
+    <script>
+        function checkGemAmount() {
+            const username = document.getElementById('username').value;
+            const data = { username: username };
+
+            fetch('http://18.195.219.147:5000/api/check_gem_amount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('gem-amount').innerText = result.message;
+            })
+            .catch(error => {
+                document.getElementById('gem-amount').innerText = 'An error occurred. Please try again.';
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>
